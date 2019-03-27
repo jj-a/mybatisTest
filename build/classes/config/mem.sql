@@ -29,15 +29,34 @@ DELETE FROM mem
 WHERE num=#{num} 
 ;
 
+DELETE FROM mem 
+WHERE num>=#{a} 
+;
 
 -- 조회
 SELECT num, name, age FROM mem 
 ORDER BY num ASC 
 ;
 
+-- 상세
+SELECT num, name, age FROM mem 
+WHERE num=#{num} 
+ORDER BY num ASC 
+;
 
+-- 검색
+SELECT num, name, age FROM mem 
+WHERE name like '%' || #{keyword} || '%' 
+ORDER BY num ASC 
+;
+
+-- 레코드 개수
+SELECT COUNT(*) FROM mem 
+
+
+--
 INSERT INTO mem(num, name, age) 
-VALUES(mem_seq.nextval, '샌드위치', 27) 
+VALUES(mem_seq.nextval, '제이지', 27) 
 ;
 
 

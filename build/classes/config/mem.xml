@@ -5,25 +5,73 @@
 
 <mapper namespace="mem">
 
+	<!-- Database 결과 데이터를 객체에 mapping하는 방법 정의 / id=PK -->
+	<resultMap type="net.mem.MemDTO" id="rs">
+		<result column="num" property="num"/>
+		<result column="name" property="name"/>
+		<result column="age" property="age"/>
+	</resultMap>
+
+
 	<insert id="insertRow" parameterType="memDTO">
 		INSERT INTO mem(num, name, age) 
 		VALUES(mem_seq.nextval, #{name}, #{age}) 
 	</insert>
-
-	<select id="selectRow">
+	
+	
+	<select id="selectAll" resultMap="rs">
 		SELECT num, name, age FROM mem 
 		ORDER BY num ASC 
 	</select>
-
+	
+	
+	<select id="selectRead" parameterType="memDTO" resultType="memDTO">
+		SELECT num, name, age FROM mem 
+		WHERE num=#{num} 
+		ORDER BY num ASC 
+	</select>
+	
+	
+	<sql id="tablename">
+		SELECT num, name, age FROM mem 
+	</sql>
+	
+	<sql id="sort">
+		ORDER BY num ASC 
+	</sql>
+	
+	<select id="search" resultMap="rs" parameterType="String">
+		<!--  || : 문자열 연결의 의미로 쓰임. OR (X) -->
+		<include refid="tablename" />
+		WHERE name like '%' || #{keyword} || '%'
+		<include refid="sort" />
+	</select>
+	
+	
 	<update id="updateRow" parameterType="memDTO">
 		UPDATE mem 
 		SET name=#{name}, age=#{age} 
 		WHERE num=#{num} 
 	</update>
 
-	<delete id="deleteRow" parameterType="memDTO">
+	<delete id="deleteRow" parameterType="int">
 		DELETE FROM mem 
 		WHERE num=#{num} 
 	</delete>
+
+
+	<!-- sql문에 특수문자 < > 등을 사용해야 하는 경우 -->
+	<delete id="deleteRow2" parameterType="int">
+		<![CDATA[
+			DELETE FROM mem 
+			WHERE num>=#{a} 
+		]]>
+	</delete>
+	
+	
+	<select id="rowCount" resultType="int">
+		SELECT COUNT(*) FROM mem 
+	</select>
+	
 
 </mapper>
