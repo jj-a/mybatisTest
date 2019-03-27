@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- SQL Query -->
+
+<mapper namespace="mem">
+
+	<insert id="insertRow" parameterType="memDTO">
+		INSERT INTO mem(num, name, age) 
+		VALUES(mem_seq.nextval, #{name}, #{age}) 
+	</insert>
+
+	<select id="selectRow">
+		SELECT num, name, age FROM mem 
+		ORDER BY num ASC 
+	</select>
+
+	<update id="updateRow" parameterType="memDTO">
+		UPDATE mem 
+		SET name=#{name}, age=#{age} 
+		WHERE num=#{num} 
+	</update>
+
+	<delete id="deleteRow" parameterType="memDTO">
+		DELETE FROM mem 
+		WHERE num=#{num} 
+	</delete>
+
+</mapper>
